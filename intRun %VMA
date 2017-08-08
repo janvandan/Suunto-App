@@ -1,0 +1,99 @@
+/* While in sport mode do this once per second */
+
+/* set your VMA or MAS in min/km */
+VMA=3.43; /* TBD */
+
+/* BEGIN Configuration Interval */
+/*     prefix is used to set the interval target */
+/*         warm (for warmup) */
+/*         ACC (for accelerate) */
+/*         XX% where XX is the %vma (%mas) targeting */
+/*         ---% (for rest interval)
+/*         cool (for cooldown) */
+/*     RESULT is used to set the interval duration or distance */
+/*         < 15 assume it's a distance (in km) */
+/*         >= 15 assume it's a duration (in s) */
+/*         could be set to SUUNTO_DURATION_PREV for the rest duration */
+
+if ( SUUNTO_LAP_NUMBER <= 1 ) {	prefix = "warm";	RESULT = 15*60;
+} else if ( SUUNTO_LAP_NUMBER == 2 ) {	prefix = "edu";	RESULT = 5*60;
+} else if ( SUUNTO_LAP_NUMBER == 3 ) {	prefix = "86%";	RESULT = 0.15;
+} else if ( SUUNTO_LAP_NUMBER == 4 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 5 ) {	prefix = "86%";	RESULT = 0.15;
+} else if ( SUUNTO_LAP_NUMBER == 6 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 7 ) {	prefix = "86%";	RESULT = 0.15;
+} else if ( SUUNTO_LAP_NUMBER == 8 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 9 ) {	prefix = "86%";	RESULT = 0.15;
+} else if ( SUUNTO_LAP_NUMBER == 10 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 11 ) {	prefix = "86%";	RESULT = 0.15;
+} else if ( SUUNTO_LAP_NUMBER == 12 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 13 ) {	prefix = "86%";	RESULT = 0.15;
+} else if ( SUUNTO_LAP_NUMBER == 14 ) {	prefix = "end";	RESULT = 30;
+} else {	prefix = "cool";	RESULT = 15*60;
+}
+
+/* END Configuration Interval */
+
+if (RESULT < 15) {
+  /* Assumption : if RESULT is > 15 then RESULT define a duration value in second */
+  /* else RESULT define a distance value in km */
+  postfix="m";
+  RESULT=(SUUNTO_LAP_DISTANCE-RESULT)*1000;
+} else {
+  postfix="s";
+  RESULT=(SUUNTO_LAP_DURATION-RESULT);
+}
+
+if (RESULT >= -10 && RESULT <= 20) {
+  /* Alarm and light between -10m and +20m or -10s and +20s */
+  /* before and after the end of the theorical interval distance or duration */
+  Suunto.alarmBeep();
+  Suunto.light();
+}
+
+if (Suunto.mod(SUUNTO_DURATION,2) == 1) {
+  postfix="%";
+  RESULT=(VMA/SUUNTO_PACE)*100;
+}
+
+/*
+} else if ( SUUNTO_LAP_NUMBER == 2 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 3 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 4 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 5 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 6 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 7 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 8 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 9 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 10 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 11 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 12 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 13 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 14 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 15 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 16 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 17 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 18 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 19 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 20 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 21 ) {	prefix = "REST";	RESULT = 3*60;
+} else if ( SUUNTO_LAP_NUMBER == 22 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 23 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 24 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 25 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 26 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 27 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 28 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 29 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 30 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 31 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 32 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 33 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 34 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 35 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 36 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 37 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 38 ) {	prefix = "MAX";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 39 ) {	prefix = "---";	RESULT = 30;
+} else if ( SUUNTO_LAP_NUMBER == 40 ) {	prefix = "MAX";	RESULT = 30;
+*/
