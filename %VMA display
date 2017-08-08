@@ -1,0 +1,9 @@
+/* While in sport mode do this once per second */
+
+/* set your VMA or MAS in min/km */
+VMA=3.43; /* TBD to be set (for ex 3.64 is my VMA in min/km for 16.5 km/h, 3.53 for 17km/h, 3.43 for 17.5km/h  ...)*/
+
+prefix="";
+
+postfix="%VMA";
+RESULT=(VMA/SUUNTO_PACE)*100;
